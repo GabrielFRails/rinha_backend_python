@@ -4,7 +4,7 @@ app = FastAPI()
 
 @app.get("/")
 def root_path():
-    return {
+	return {
 		"msg": "Saudações ser pensante"
-    }
-    
+	}
+	
