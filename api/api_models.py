@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from enum import Enum
 
 class Client(BaseModel):
@@ -13,5 +13,5 @@ class TransactionType(str, Enum):
 class TransactionRequest(BaseModel):
 	valor: int
 	tipo: TransactionType
-	descricao: str
+	descricao: str = Field(max_length=10)
 	
