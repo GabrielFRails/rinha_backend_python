@@ -36,8 +36,9 @@ def main():
 	if not r.keys(): # means empty db
 		for c in clients:
 			client_key = f"client:{c['id']}"
-			client_value = json.dumps(c)
-			r.set(client_key, client_value)
+			client_saldo = c['saldo']
+			client_limite = c['limite']
+			r.hset(client_key, mapping={'saldo': client_saldo, 'limite': client_limite})
 		return
 
 	print("Database already set!")
