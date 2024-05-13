@@ -15,6 +15,14 @@ services:
     depends_on:
       - redis
 
+  init_redis:
+    image: python:3.8-slim
+    volumes:
+      - ./initial_data_load.py:/app/initial_data_load.py:ro
+    command: ["sh", "-c", "pip install redis && python /app/initial_data_load.py"]
+    depends_on:
+      - redis
+
   redis:
     image: redis:latest
 
