@@ -1,11 +1,11 @@
 runall:
 	docker-compose up --build -d
 
-stopall:
+stop:
 	docker-compose down
 
 logs:
-	docker-compose logs
+	docker-compose logs -f
 
 clean:
 	docker image prune && \
