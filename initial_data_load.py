@@ -38,6 +38,9 @@ def main():
 			client_key = f"client:{c['id']}"
 			client_value = json.dumps(c)
 			r.set(client_key, client_value)
+		return
+
+	print("Database already set!")
 # }
 
 if __name__ == "__main__":
