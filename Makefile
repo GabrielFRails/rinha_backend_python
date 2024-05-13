@@ -1,5 +1,5 @@
 runall:
-	docker-compose up --build
+	docker-compose up --build -d
 
 stopall:
 	docker-compose down
