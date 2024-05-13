@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from api_models import *
 
+from libclient import *
+
 app = FastAPI()
 
 @app.get("/")
@@ -8,6 +10,14 @@ def root_path():
 	return {
 		"msg": "Saudações ser pensante"
 	}
+
+@app.get("/clientes/{id}")
+def get_client(id: int):
+    return {
+		"id": id,
+		"saldo": client_get_balance(id),
+		"limite": client_get_limit(id)
+    }
 
 @app.post("/clientes/{id}/transacoes")
 def transaction_request(id: int, request: TransactionRequest):
