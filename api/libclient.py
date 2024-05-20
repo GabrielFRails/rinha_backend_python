@@ -13,13 +13,31 @@ class Client(RedisClient):
 		field = self.client_balance_field
 		client_key = self.get_client_key(clientid)
 		balance = self.r.hget(client_key, field)
-		return balance
+		return float(balance)
 
 	def get_client_limit(self, clientid):
 		field = self.client_limit_field
 		client_key = self.get_client_key(clientid)
 		limit = self.r.hget(client_key, field)
-		return limit
+		return float(limit)
+	
+	def increase_client_balance(self, clientid, value):
+		field = self.client_balance_field
+		client_key = self.get_client_key(clientid)
+		balance = self.get_client_balance(clientid)
+		new_balance = balance + value
+		
+		result = self.r.hset(client_key, field, new_balance)
+		return result
+	
+	def decrease_client_balance(self, clientid, value):
+		field = self.client_balance_field
+		client_key = self.get_client_key(clientid)
+		balance = self.get_client_balance(clientid)
+		new_balance = balance - float(value) 
+		
+		result = self.r.hset(client_key, field, new_balance)
+		return result
 
 def client_get_balance(clientid):
 	db = _clientdb()
