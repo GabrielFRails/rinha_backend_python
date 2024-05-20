@@ -1,7 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+
 from api_models import *
 
 from libclient import *
+from libapi import *
 
 app = FastAPI()
 
@@ -21,10 +23,13 @@ def get_client(id: int):
 
 @app.post("/clientes/{id}/transacoes")
 def transaction_request(id: int, request: TransactionRequest):
-	return {
-		"limite" : 100000,
-		"saldo" : -9098
-	}
+# {
+	err, data = api_transaction(id, request)
+	if err != -1:
+		return data
+	
+	raise HTTPException(status_code=400, detail="Bad Request") 
+# }
 
 @app.get("/clientes/{id}/extrato")
 def client_statement(id: int):
