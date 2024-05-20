@@ -21,6 +21,9 @@ def get_client(id: int):
 		"limite": client_get_limit(id)
     }
 
+# TODO:
+# 1- Verificar se client existe antes das transações
+# 2- implementar verificação de limite
 @app.post("/clientes/{id}/transacoes")
 def transaction_request(id: int, request: TransactionRequest):
 # {
