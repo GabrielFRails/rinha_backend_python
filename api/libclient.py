@@ -8,6 +8,10 @@ class Client(RedisClient):
 
 	def get_client_key(self, id):
 		return f"client:{id}"
+	
+	def check_client_existence(self, clientid):
+		client_key = self.get_client_key(clientid)
+		return self.r.hgetall(client_key)
 
 	def get_client_balance(self, clientid):
 		field = self.client_balance_field
@@ -46,6 +50,10 @@ def client_get_balance(clientid):
 def client_get_limit(clientid):
 	db = _clientdb()
 	return db.get_client_limit(clientid)
+
+def check_client_existence(clientid):
+	db = _clientdb()
+	return db.check_client_existence(clientid)
 
 __client_db = None
 def _clientdb():
