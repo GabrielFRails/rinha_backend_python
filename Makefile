@@ -13,3 +13,6 @@ clean:
 
 cleandata:
 	docker exec -i rinha_backend_python_redis_1 redis-cli FLUSHALL
+
+restart: stop runall
+
