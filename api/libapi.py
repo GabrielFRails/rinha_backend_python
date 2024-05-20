@@ -28,11 +28,11 @@ def api_transaction(clientid, transaction):
 def api_client_get(clientid):
 # {
 	if not check_client_existence(clientid):
-		return -1, HTTPException(status_code=404, detail="Cliente não encontrado na base de dados")  
+		return -1, None, HTTPException(status_code=404, detail="Cliente não encontrado na base de dados")  
 
 	return 0, {
 		"id": clientid,
 		"saldo": client_get_balance(clientid),
 		"limite": client_get_limit(clientid)
-    }
+    }, None
 # }

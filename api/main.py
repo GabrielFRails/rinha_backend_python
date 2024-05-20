@@ -15,11 +15,10 @@ def root_path():
 
 @app.get("/clientes/{id}")
 def get_client(id: int):
-	err, data = api_client_get(id)
+	err, data, exception = api_client_get(id)
 	if not err:
 		return data
-	
-	exception = data
+
 	raise exception
 
 # TODO:
