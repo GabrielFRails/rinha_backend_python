@@ -9,3 +9,6 @@ class RedisClient:
 
 	def get(self, key):
 		return self.r.get(key)
+	
+	def check_key_existence(self, key):
+		return self.r.exists(key)
