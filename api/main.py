@@ -15,11 +15,12 @@ def root_path():
 
 @app.get("/clientes/{id}")
 def get_client(id: int):
-    return {
-		"id": id,
-		"saldo": client_get_balance(id),
-		"limite": client_get_limit(id)
-    }
+	err, data = api_client_get(id)
+	if not err:
+		return data
+	
+	exception = data
+	raise exception
 
 # TODO:
 # 1- Verificar se client existe antes das transações
