@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from enum import Enum
 
-class Client(BaseModel):
+class ClientApi(BaseModel):
 	id: int
 	limite: int
 	saldo_inicial: int
