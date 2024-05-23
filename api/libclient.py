@@ -1,4 +1,5 @@
 from libdb import *
+from liblog import *
 
 class Client(RedisClient):
 	def __init__(self, host="redis", port="6379"):
@@ -44,19 +45,23 @@ class Client(RedisClient):
 		return result
 
 def client_get_balance(clientid):
+	log_info(f"client_get_balance({clientid})")
 	db = _clientdb()
 	return db.get_client_balance(clientid)
 
 def client_get_limit(clientid):
+	log_info(f"client_get_limit({clientid})")
 	db = _clientdb()
 	return db.get_client_limit(clientid)
 
 def check_client_existence(clientid):
+	log_info(f"check_client_existence({clientid})")
 	db = _clientdb()
 	return db.check_client_existence(clientid)
 
 __client_db = None
 def _clientdb():
+	log_info(f"_clientdb()")
 	global __client_db
 	if not __client_db:
 		__client_db = Client()
