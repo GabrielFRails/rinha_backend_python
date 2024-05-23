@@ -1,9 +1,10 @@
 import logging
+from datetime import datetime
 
 def log_info(s: str):
 # {
 	logger = _logger()
-	logger.info(s)
+	logger.info(f"{datetime.now()}: {s}")
 # }
 
 __logger = None
