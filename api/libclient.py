@@ -61,9 +61,9 @@ def check_client_existence(clientid):
 
 __client_db = None
 def _clientdb():
-	log_info(f"_clientdb()")
 	global __client_db
 	if not __client_db:
+		log_info(f"Client()")
 		__client_db = Client()
 
 	return __client_db
