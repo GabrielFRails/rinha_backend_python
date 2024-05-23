@@ -1,24 +1,37 @@
 from libclient import *
 from liblog import *
+from api_models import *
 
-def transaction_credit(clientid, value):
+def transaction_debit(clientid, transaction_value):
 # {
-	log_info(f"transaction_credit({clientid}, {value})")
+	log_info(f"transaction_debit({clientid}, {transaction_value})")
 	db = _clientdb()
-	success = db.increase_client_balance(clientid, value)
 
-	log_info(f"transaction_credit success: {success}")
-	return success
+	client_balance = client_get_balance(clientid)
+	client_limit = client_get_limit(clientid)
+
+	if (client_balance - transaction_value) < (client_limit * (-1)):
+		log_info("client limit exced")
+		return 1
+	
+	return db.decrease_client_balance(clientid, transaction_value)
 # }
 
-def transaction_debit(clientid, value):
+def transaction_credit(clientid, transaction_value):
 # {
-	log_info(f"transaction_debit({clientid}, {value})")
+	log_info(f"transaction_credit({clientid}, {transaction_value})")
 	db = _clientdb()
-	success = db.decrease_client_balance(clientid, value)
+	
+	return db.increase_client_balance(clientid, transaction_value)
+# }
 
-	log_info(f"transaction_debit success: {success}")
-	return success
+def transaction_exe(clientid, transaction_value, transaction_type):
+# {
+	if transaction_type == TransactionType.CREDITO.value:
+		return transaction_credit(clientid, transaction_value)
+	
+	elif transaction_type == TransactionType.DEBITO.value:
+		return transaction_debit(clientid, transaction_value)
 # }
 
 __client_db = None
