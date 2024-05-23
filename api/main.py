@@ -20,18 +20,15 @@ def get_client(id: int):
 		return data
 
 	raise exception
-
-# TODO:
-# 1- Verificar se client existe antes das transações
-# 2- implementar verificação de limite
 @app.post("/clientes/{id}/transacoes")
 def transaction_request(id: int, request: TransactionRequest):
 # {
-	err, data = api_transaction(id, request)
-	if err != -1:
+	err, data, exception = api_transaction(id, request)
+
+	if not err:
 		return data
 	
-	raise HTTPException(status_code=400, detail="Bad Request") 
+	raise exception
 # }
 
 @app.get("/clientes/{id}/extrato")
