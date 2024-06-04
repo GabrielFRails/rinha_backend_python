@@ -33,24 +33,15 @@ def transaction_request(id: int, request: TransactionRequest):
 
 @app.get("/clientes/{id}/extrato")
 def client_statement(id: int):
-	return {
-		"saldo": {
-			"total": -9098,
-			"data_extrato": "2024-01-17T02:34:41.217753Z",
-			"limite": 100000
-		},
-		"ultimas_transacoes": [
-			{
-				"valor": 10,
-				"tipo": "c",
-				"descricao": "descricao",
-				"realizada_em": "2024-01-17T02:34:38.543030Z"
+	err, client_data, exception = api_client_get(id)
+	if not err:
+		return {
+			"saldo": {
+				"total": client_data['saldo'],
+				"data_extrato": utils_convert_timestamp_to_datetime(time.time()),
+				"limite": client_data['limite']
 			},
-			{
-				"valor": 90000,
-				"tipo": "d",
-				"descricao": "descricao",
-				"realizada_em": "2024-01-17T02:34:38.543030Z"
-			}
-		]
-	}
+			"ultimas_transacoes": api_get_statement(id)
+		}
+	
+	raise exception
