@@ -9,6 +9,9 @@ class Client(RedisClient):
 
 	def get_client_key(self, id):
 		return f"client:{id}"
+
+	def get_client_statement_key(self, id):
+		return f"client_statement:{id}"
 	
 	def check_client_existence(self, clientid):
 		client_key = self.get_client_key(clientid)
@@ -44,6 +47,15 @@ class Client(RedisClient):
 		result = self.r.hset(client_key, field, new_balance)
 		return result
 
+	def update_client_statement(self, clientid, transaction, score):
+		key = self.get_client_statement_key(clientid)
+		self.r.zadd(key, {transaction: score})
+
+	def get_client_statement(self, clientid, n):
+		key = self.get_client_statement_key(clientid)
+		statement = self.r.zrevrangebyscore(key, "+inf", "-inf", 0, n-1, withscores=True)
+		return statement
+
 def client_get_balance(clientid):
 	log_info(f"client_get_balance({clientid})")
 	db = _clientdb()
@@ -58,6 +70,13 @@ def check_client_existence(clientid):
 	log_info(f"check_client_existence({clientid})")
 	db = _clientdb()
 	return db.check_client_existence(clientid)
+
+def client_data_get(clientid):
+	return {
+		"id": clientid,
+		"saldo": client_get_balance(clientid),
+		"limite": client_get_limit(clientid)
+	}
 
 __client_db = None
 def _clientdb():
